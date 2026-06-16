@@ -198,7 +198,7 @@
     }
 
     #step1 {
-      display: block; /* ပထမဆုံး စာမျက်နှာကိုပဲ ဖွင့်ထားမည် */
+      display: block;
     }
 
     #resultScreen {
@@ -248,7 +248,6 @@
     <button class="btn-submit" onclick="goToStep(2)">နောက်တစ်ဆင့် သို့</button>
   </div>
 
-
   <div id="step2" class="step-screen">
     <div class="section-title">ငွေလွှဲမည့် နည်းလမ်းကို ရွေးချယ်ပါ</div>
     <div class="payment-grid">
@@ -263,13 +262,11 @@
     <div id="accountBox" class="account-details">
       <b style="color:var(--primary);" id="payTitle">ငွေလွှဲရမည့် အကောင့်</b><br>
       နံပါတ် - <span id="payNumber" style="font-size: 16px; font-weight: bold; color: #10b981;">-</span><br>
-      <span style="font-size:12px; color:var(--text-muted);">*ကျေးဇူးပြု၍ ငွေလွှဲပြီးမှ နောက်တစ်ဆင့်သို့ သွားပါရန်။</span>
     </div>
 
     <button class="btn-submit" onclick="goToStep(3)" style="margin-top: 30px;">ငွေလွှဲပြီးပါပြီ (နောက်တစ်ဆင့်)</button>
     <button class="btn-submit" onclick="goToStep(1)" style="background-color: #334155; margin-top: 10px;">နောက်ပြန်ဆုတ်ရန်</button>
   </div>
-
 
   <div id="step3" class="step-screen">
     <div class="section-title">ငွေလွှဲပြေစာ Screenshot တင်ပါ</div>
@@ -283,11 +280,10 @@
     <button class="btn-submit" onclick="goToStep(2)" style="background-color: #334155; margin-top: 10px;">နောက်ပြန်ဆုတ်ရန်</button>
   </div>
 
-
   <div id="resultScreen">
     <div style="font-size: 44px; color: #10b981; margin-bottom: 10px;">✓</div>
     <h2 style="margin:0 0 8px 0; color:#10b981; font-size: 20px;">အော်ဒါတင်ခြင်း အောင်မြင်သည်</h2>
-    <p style="margin:0; font-size:13px; color:var(--text-muted);">လူကြီးမင်း တင်ပေးလိုက်သော ငွေလွှဲပြေစာနှင့် အော်ဒါကို ဆိုင်မှ စစ်ဆေးပြီး ၅ မိနစ်အတွင်း စိန်ထည့်သွင်းပေးပါမည်။ ကျေးဇူးတင်ပါတယ်ဗျာ။</p>
+    <p style="margin:0; font-size:13px; color:var(--text-muted);">အော်ဒါနှင့် ပြေစာကို စစ်ဆေးပြီး ၅ မိနစ်အတွင်း စိန်ထည့်သွင်းပေးပါမည်။</p>
   </div>
 
   <script>
@@ -297,7 +293,7 @@
     let selectedProduct = "";
     let selectedPrice = "";
     let selectedMethod = "";
-    let base64Image = "";
+    let base64Image = "No Image";
 
     function selectItem(product, price, element) {
       const cards = document.querySelectorAll('.card');
@@ -310,32 +306,27 @@
     function selectPayment(method, accInfo) {
       document.getElementById('kpayOpt').classList.remove('selected');
       document.getElementById('waveOpt').classList.remove('selected');
-      
       if(method === 'KPay') document.getElementById('kpayOpt').classList.add('selected');
       if(method === 'WavePay') document.getElementById('waveOpt').classList.add('selected');
-
       selectedMethod = method;
-      document.getElementById('payTitle').innerText = `💰 ${method} ဖြင့် ငွေလွှဲရန်`;
+      document.getElementById('payTitle').innerText = `💰 ${method} ဖြင့် Ngwe Lwဲရန်`;
       document.getElementById('payNumber').innerText = accInfo;
       document.getElementById('accountBox').style.display = 'block';
     }
 
-    // စာမျက်နှာများ ကူးပြောင်းမည့် စနစ်
     function goToStep(stepNumber) {
       if(stepNumber === 2) {
         const gId = document.getElementById('gameId').value;
         const zId = document.getElementById('zoneId').value;
         if(!gId || !zId || !selectedProduct) {
-          alert("Game ID, Zone ID နှင့် စိန်ပမာဏကို မှန်ကန်စွာ ရွေးချယ်ပေးပါဦးဗျာ။");
+          alert("အချက်အလက်များကို ပြည့်စုံစွာ ဖြည့်စွက်ရွေးချယ်ပေးပါဦး။");
           return;
         }
       }
       if(stepNumber === 3 && !selectedMethod) {
-        alert("ကျေးဇူးပြု၍ ငွေလွှဲမည့် နည်းလမ်းကို ရွေးချယ်ပေးပါဦးဗျာ။");
+        alert("ငွေလွှဲမည့် နည်းလမ်းကို အရင်ရွေးချယ်ပေးပါ။");
         return;
       }
-
-      // စာမျက်နှာအားလုံးကို အရင်ဖျောက်ပြီး သတ်မှတ်စာမျက်နှာကို ပြခြင်း
       const screens = document.querySelectorAll('.step-screen');
       screens.forEach(screen => screen.style.display = 'none');
       document.getElementById('step' + stepNumber).style.display = 'block';
@@ -351,6 +342,7 @@
         preview.src = reader.result;
         preview.style.display = 'block';
         text.innerText = "✓ ဓာတ်ပုံ ရွေးချယ်ပြီးပါပြီ";
+        // ပုံကို Compress သို့မဟုတ် အရွယ်အစားအမှန်ကို ယူခြင်း
         base64Image = reader.result.split(',')[1];
       }
       if (file) reader.readAsDataURL(file);
@@ -358,56 +350,40 @@
 
     async function placeOrder() {
       const btn = document.getElementById('submitBtn');
-      if(!base64Image) {
-        alert("ကျေးဇူးပြု၍ ငွေလွှဲပြေစာ Screenshot အရင် တင်ပေးပါဦးဗျာ။");
+      if(base64Image === "No Image") {
+        alert("ကျေးဇူးပြု၍ ငွေလွှဲပြေစာ Screenshot အရင် တင်ပေးပါဦး။");
         return;
       }
 
       btn.innerText = "အော်ဒါ ပေးပို့နေပါသည်...";
       btn.disabled = true;
 
-      try {
-        let imageUrl = "No Image";
-        const imgurFormData = new FormData();
-        imgurFormData.append("image", base64Image);
+      // Imgur ကို မသုံးတော့ဘဲ ဒေတာအားလုံးကို Google Sheet ဆီ တိုက်ရိုက် တန်းပို့ခြင်း
+      const orderData = {
+        gameId: document.getElementById('gameId').value,
+        zoneId: document.getElementById('zoneId').value,
+        product: selectedProduct,
+        price: selectedPrice + " K",
+        paymentMethod: selectedMethod,
+        screenshot: base64Image // Base64 Data တိုက်ရိုက်ပို့သည်
+      };
 
-        const imgurResponse = await fetch("https://api.imgur.com/3/image", {
-          method: "POST",
-          headers: { Authorization: "Client-ID 544c07e999f7ec0" },
-          body: imgurFormData
-        });
-        
-        const imgurData = await imgurResponse.json();
-        if(imgurData.success) imageUrl = imgurData.data.link;
+      // ⚠️ ဤနေရာတွင် သင်၏ Google Sheet Web App URL အသစ်ကို အစားထိုးထည့်ပါ
+      const googleSheetUrl = "https://script.google.com/macros/s/AKfycbwo2pblvN-3l2V8kWh4lRUhXaKq6fXdYEbUewfIByA0_My2fWDV4788oycuDDUIAeCT/exec";
 
-        // ဒေတာများ သိမ်းဆည်းခြင်း (ငွေလွှဲနည်းလမ်းပါ ထည့်ထားသည်)
-        const orderData = {
-          gameId: document.getElementById('gameId').value,
-          zoneId: document.getElementById('zoneId').value,
-          product: selectedProduct,
-          price: selectedPrice + " K",
-          paymentMethod: selectedMethod, // Kpay သို့မဟုတ် Wavepay ရွေးထားမှု
-          screenshot: imageUrl
-        };
-
-        // ⚠️ ဤနေရာတွင် မိတ်ဆွေ၏ Google Web App URL ကို ထည့်ပါ ဘရို
-        const googleSheetUrl = "https://script.google.com/macros/s/AKfycbySDKJMZh9aed7I4K6uU_tOf8qQjLl7QD4k_mJSh0z5k1d2bY-ipsL-3tBRHiKLVXJ5/exec";
-
-        await fetch(googleSheetUrl, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(orderData)
-        });
-
+      fetch(googleSheetUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      }).then(() => {
         document.getElementById('step3').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'block';
-
-      } catch (error) {
-        alert("Error ဖြစ်သွားပါသဖြင့် ပြန်လည်ကြိုးစားပေးပါဦး။");
+      }).catch((error) => {
+        alert("Error ဖြစ်သွားသဖြင့် ပြန်ကြိုးစားပေးပါ။");
         btn.innerText = "အော်ဒါ အပြီးသတ်တင်မည်";
         btn.disabled = false;
-      }
+      });
     }
   </script>
 </body>
