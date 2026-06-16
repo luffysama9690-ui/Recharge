@@ -142,18 +142,45 @@
   let selectedProduct = "";
   let selectedPrice = 0;
 
-  function selectItem(product, price, element) {
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-    element.classList.add('selected');
-    
-    selectedProduct = product;
-    selectedPrice = price;
-    document.getElementById('displayPrice').innerText = price + " MMK";
+function placeOrder() {
+  const gId = document.getElementById('gameId').value;
+  const zId = document.getElementById('zoneId').value;
+
+  if(!gId || !zId) {
+    tg.showAlert("Game ID နှင့် Zone ID ကို ဖြည့်ပေးပါခင်ဗျာ။");
+    return;
+  }
+  if(!selectedProduct) {
+    tg.showAlert("ဝယ်ယူမည့် စိန်ပမာဏကို ရွေးချယ်ပေးပါဦး။");
+    return;
   }
 
-  function placeOrder() {
-    const gId = document.getElementById('gameId').value;
-    const zId = document.getElementById('zoneId').value;
+  // Google Sheet သို့ ပို့မည့် အချက်အလက်များ
+  const orderData = {
+    gameId: gId,
+    zoneId: zId,
+    product: selectedProduct,
+    price: selectedPrice + " MMK"
+  };
+
+  // ⚠️ အောက်က နေရာမှာ အဆင့် ၁ ကရလာတဲ့ သင့်ရဲ့ Google Web App URL ကို အစားထိုးထည့်ပါ
+  const googleSheetUrl = "https://script.google.com/macros/s/AKfycbysQ-IN3neM2KOqnKtlBjsL1wY1krTb69q8Lry2Z3fLw6awhBwg9GsTCcrwH6adPnb8/exec";
+
+  // နောက်ကွယ်မှ ဒေတာလှမ်းပို့ခြင်း (Fetch API)
+  fetch(googleSheetUrl, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(orderData)
+  }).then(() => {
+    tg.showAlert("Order တင်ခြင်း အောင်မြင်ပါသည်။ ဆိုင်မှ ၅ မိနစ်အတွင်း ဖြည့်သွင်းပေးပါမည်။");
+    tg.close(); // မီနီအက်ပ်ကို အလိုအလျောက် ပိတ်ချခြင်း
+  }).catch((error) => {
+    tg.showAlert("Error ဖြစ်သွားပါသဖြင့် ပြန်လည်ကြိုးစားပေးပါဦးဗျာ။");
+  });
+}
 
     if(!gId || !zId) {
       tg.showAlert("Game ID နှင့် Zone ID ကို ဖြည့်ပေးပါခင်ဗျာ။");
