@@ -4,16 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MONKEY RECHARGE</title>
-  <!-- Telegram Web App Script -->
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
     :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
+      --bg-color: #0d131a;
+      --card-bg: #141f2e;
       --text-main: #ffffff;
-      --text-muted: #94a3b8;
-      --primary: #38bdf8;
-      --primary-hover: #0ea5e9;
+      --text-muted: #728a9c;
+      --primary: #2fa3e6;
+      --primary-hover: #1d82bd;
     }
 
     body {
@@ -27,13 +26,17 @@
 
     .header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .header h1 {
-      font-size: 22px;
+      font-size: 20px;
       margin: 0 0 4px 0;
       color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .header p {
@@ -44,25 +47,22 @@
 
     .section-title {
       font-size: 14px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-      margin-top: 20px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      margin-top: 15px;
     }
 
     /* Input Fields */
     .input-group {
       display: grid;
-      grid-template-columns: 2fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 12px;
       margin-bottom: 16px;
     }
 
     .input-field {
       background-color: var(--card-bg);
-      border: 1px solid #334155;
+      border: 1px solid #23354d;
       border-radius: 8px;
       padding: 12px;
       color: white;
@@ -70,6 +70,7 @@
       outline: none;
       width: 100%;
       box-sizing: border-box;
+      text-align: center;
     }
 
     .input-field:focus {
@@ -79,67 +80,86 @@
     /* Diamond Cards Grid */
     .grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
     }
 
     .card {
       background-color: var(--card-bg);
       border: 2px solid transparent;
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 10px;
+      padding: 12px 8px;
       text-align: center;
       cursor: pointer;
       position: relative;
       transition: all 0.2s ease;
+      box-sizing: border-box;
     }
 
     .card.selected {
       border-color: var(--primary);
-      background-color: #0c4a6e;
+      background-color: #172c47;
     }
 
     .card .badge {
       position: absolute;
-      top: 6px;
-      right: 6px;
-      background: #ef4444;
+      top: -6px;
+      right: 4px;
+      background: #10b981;
       color: white;
       font-size: 9px;
       font-weight: bold;
-      padding: 2px 6px;
+      padding: 1px 4px;
       border-radius: 4px;
     }
 
+    .card .badge.hot {
+      background: #ef4444;
+    }
+
     .diamond-img {
-      width: 32px;
-      height: 32px;
-      margin-bottom: 8px;
+      width: 28px;
+      height: 28px;
+      margin-bottom: 6px;
     }
 
     .card .title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+    }
+
+    .card .old-price {
+      font-size: 10px;
+      text-decoration: line-through;
+      color: var(--text-muted);
     }
 
     .card .price {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--primary);
+      font-weight: bold;
+    }
+
+    /* Selection Preview Text */
+    .preview-text {
+      margin-top: 15px;
+      font-size: 14px;
+      color: var(--text-muted);
     }
 
     /* Order Button */
     .btn-submit {
       width: 100%;
       background-color: var(--primary);
-      color: #0f172a;
+      color: #ffffff;
       border: none;
       border-radius: 8px;
       padding: 14px;
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 24px;
+      margin-top: 15px;
       transition: background 0.2s;
     }
 
@@ -147,21 +167,21 @@
       background-color: var(--primary-hover);
     }
 
-    /* Success / Result Screen overlay inside App */
+    /* Success Result Screen */
     #resultScreen {
       display: none;
       text-align: center;
       padding: 30px 16px;
       background-color: var(--card-bg);
-      border-radius: 16px;
+      border-radius: 12px;
       margin-top: 20px;
-      border: 1px solid #334155;
+      border: 1px solid #23354d;
     }
 
     .success-icon {
-      font-size: 48px;
+      font-size: 44px;
       color: #10b981;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .payment-box {
@@ -172,6 +192,7 @@
       text-align: left;
       font-size: 14px;
       border-left: 4px solid var(--primary);
+      line-height: 1.6;
     }
   </style>
 </head>
@@ -179,82 +200,85 @@
 
   <div id="mainForm">
     <div class="header">
-      <h1>MONKEY RECHARGE</h1>
-      <p>Mobile Legends Diamonds Instantly</p>
+      <h1>🐒 MONKEY RECHARGE</h1>
+      <p>Mobile Legends Diamonds Top-Up</p>
     </div>
 
-    <!-- User Information -->
-    <div class="section-title">Account Info</div>
+    <div class="section-title">Game ID & Zone ID ဖြည့်ပါ</div>
     <div class="input-group">
-      <input type="number" id="gameId" class="input-field" placeholder="Enter Game ID">
-      <input type="number" id="zoneId" class="input-field" placeholder="(Zone)">
+      <input type="number" id="gameId" class="input-field" placeholder="Player ID">
+      <input type="number" id="zoneId" class="input-field" placeholder="Zone ID">
     </div>
 
-    <!-- Diamond Items -->
-    <div class="section-title">Select Package</div>
+    <div class="section-title">စိန်ပမာဏရွေးချယ်ပါ</div>
     <div class="grid">
-      <div class="card" onclick="selectItem('86 Diamonds', '2400', this)">
-        <div class="badge">POPULAR</div>
+      
+      <div class="card" onclick="selectItem('11 Diamonds', '831', this)">
+        <div class="badge">မောင်ရခိုင်</div>
+        <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
+        <div class="title">11 💎</div>
+        <div class="old-price">900 K</div>
+        <div class="price">831 K</div>
+      </div>
+
+      <div class="card" onclick="selectItem('22 Diamonds', '1561', this)">
+        <div class="badge">မောင်ရခိုင်</div>
+        <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
+        <div class="title">22 💎</div>
+        <div class="old-price">1700 K</div>
+        <div class="price">1561 K</div>
+      </div>
+
+      <div class="card" onclick="selectItem('86 Diamonds', '5249', this)">
+        <div class="badge hot">Hot</div>
         <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
         <div class="title">86 💎</div>
-        <div class="price">2,400 MMK</div>
+        <div class="old-price">5600 K</div>
+        <div class="price">5249 K</div>
       </div>
 
-      <div class="card" onclick="selectItem('172 Diamonds', '4800', this)">
-        <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
-        <div class="title">172 💎</div>
-        <div class="price">4,800 MMK</div>
-      </div>
-
-      <div class="card" onclick="selectItem('257 Diamonds', '7100', this)">
-        <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
-        <div class="title">257 💎</div>
-        <div class="price">7,100 MMK</div>
-      </div>
-
-      <div class="card" onclick="selectItem('706 Diamonds', '18500', this)">
-        <div class="badge">BEST</div>
-        <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
-        <div class="title">706 💎</div>
-        <div class="price">18,500 MMK</div>
-      </div>
     </div>
 
-    <!-- Submit Button -->
+    <div class="preview-text" id="previewText">ရွေးချယ်ထားသည့် ပစ္စည်း - မရှိသေးပါ</div>
+
     <button class="btn-submit" id="submitBtn" onclick="placeOrder()">ဝယ်ယူမည်</button>
   </div>
 
-  <!-- Success Payment Result Section (App မပိတ်ဘဲ ဒီနေရာက ပေါ်လာမှာပါ) -->
   <div id="resultScreen">
     <div class="success-icon">✓</div>
-    <h2 style="margin:0 0 8px 0; color:#10b981;">အော်ဒါတင်ခြင်း အောင်မြင်သည်</h2>
-    <p style="margin:0; font-size:14px; color:var(--text-muted);">လူကြီးမင်း၏ အော်ဒါကို စနစ်ထဲသို့ မှတ်တမ်းတင်ပြီးပါပြီ။</p>
+    <h2 style="margin:0 0 8px 0; color:#10b981; font-size: 20px;">အော်ဒါတင်ခြင်း အောင်မြင်သည်</h2>
+    <p style="margin:0; font-size:13px; color:var(--text-muted);">လူကြီးမင်း၏ အော်ဒါကို စနစ်ထဲသို့ ထည့်သွင်းပြီးပါပြီ။</p>
     
     <div class="payment-box">
-      <b style="color:var(--primary);">💰 ငွေလွှဲရမည့် အကောင့်များ</b><br><br>
+      <b style="color:var(--primary);">💰 ငွေလွှဲရမည့် အကောင့်များ</b><br>
       • KPay - 09xxxxxxxxx (U Monkey)<br>
       • WavePay - 09xxxxxxxxx (U Monkey)<br><br>
-      <span style="font-size:12px; color:#ef4444;">*ငွေလွှဲပြီးပါက လွှဲပြေစာ (Screenshot) ကို အပြင်က Bot Chat Box ထဲသို့ ပို့ပေးပါရန်။</span>
+      <span style="font-size:11px; color:#ef4444;">*ငွေလွှဲပြီးပါက လွှဲပြေစာ (Screenshot) ကို အပြင်က Chat Box ထဲသို့ ပို့ပေးပါရန်။</span>
     </div>
   </div>
 
   <script>
     const tg = window.Telegram.WebApp;
-    tg.expand(); // App ကို အပြည့်ဆွဲတင်ခြင်း
+    tg.expand(); 
 
     let selectedProduct = "";
     let selectedPrice = "";
 
+    // ကတ်ပြားများကို ကလစ်နှိပ်လျှင် အလုပ်လုပ်စေမည့် Function
     function selectItem(product, price, element) {
-      // ရွေးထားတဲ့ Card ကို အရောင်ပြောင်းခြင်း
       const cards = document.querySelectorAll('.card');
       cards.forEach(card => card.classList.remove('selected'));
+      
       element.classList.add('selected');
-
       selectedProduct = product;
       selectedPrice = price;
+
+      // ရွေးလိုက်တဲ့အချက်အလက်ကို စာသားပြောင်းပေးခြင်း
+      document.getElementById('previewText').innerText = `ရွေးချယ်ထားသည့် ပစ္စည်း - ${product} (${price} K)`;
+      document.getElementById('previewText').style.color = "#2fa3e6";
     }
 
+    // ဝယ်ယူမည် ခလုတ်နှိပ်လျှင် အလုပ်လုပ်စေမည့် Function
     function placeOrder() {
       const gId = document.getElementById('gameId').value;
       const zId = document.getElementById('zoneId').value;
@@ -269,7 +293,6 @@
         return;
       }
 
-      // ခလုတ်ကို Loading ပြောင်းပြီး ခေတ္တပိတ်ခြင်း
       btn.innerText = "ခဏစောင့်ပါ...";
       btn.disabled = true;
 
@@ -277,11 +300,11 @@
         gameId: gId,
         zoneId: zId,
         product: selectedProduct,
-        price: selectedPrice + " MMK"
+        price: selectedPrice + " K"
       };
 
-      // ⚠️ ဤနေရာတွင် မိတ်ဆွေ၏ Google Web App URL ကို ထည့်ပါ ဘရို
-      const googleSheetUrl = "https://script.google.com/macros/s/AKfycbysQ-IN3neM2KOqnKtlBjsL1wY1krTb69q8Lry2Z3fLw6awhBwg9GsTCcrwH6adPnb8/exec";
+      // ⚠️ ဤနေရာတွင် မိတ်ဆွေ၏ Google Web App URL ကို အစားထိုးထည့်ပါ ဘရို
+      const googleSheetUrl = "Yhttps://script.google.com/macros/s/AKfycbysQ-IN3neM2KOqnKtlBjsL1wY1krTb69q8Lry2Z3fLw6awhBwg9GsTCcrwH6adPnb8/exec";
 
       fetch(googleSheetUrl, {
         method: 'POST',
@@ -291,7 +314,7 @@
         },
         body: JSON.stringify(orderData)
       }).then(() => {
-        // အောင်မြင်လျှင် အက်ပ်မပိတ်ဘဲ စာမျက်နှာကို ပြောင်းလဲပစ်ခြင်း
+        // အက်ပ်မပိတ်ဘဲ Success Screen ကို ပြောင်းပြခြင်း
         document.getElementById('mainForm').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'block';
       }).catch((error) => {
