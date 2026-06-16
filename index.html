@@ -33,10 +33,6 @@
       font-size: 20px;
       margin: 0 0 4px 0;
       color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
     }
 
     .header p {
@@ -73,10 +69,6 @@
       text-align: center;
     }
 
-    .input-field:focus {
-      border-color: var(--primary);
-    }
-
     /* Diamond Cards Grid */
     .grid {
       display: grid;
@@ -93,7 +85,6 @@
       cursor: pointer;
       position: relative;
       transition: all 0.2s ease;
-      box-sizing: border-box;
     }
 
     .card.selected {
@@ -113,10 +104,6 @@
       border-radius: 4px;
     }
 
-    .card .badge.hot {
-      background: #ef4444;
-    }
-
     .diamond-img {
       width: 28px;
       height: 28px;
@@ -126,13 +113,6 @@
     .card .title {
       font-size: 14px;
       font-weight: bold;
-      margin-bottom: 2px;
-    }
-
-    .card .old-price {
-      font-size: 10px;
-      text-decoration: line-through;
-      color: var(--text-muted);
     }
 
     .card .price {
@@ -141,47 +121,64 @@
       font-weight: bold;
     }
 
+    /* Payment Method Options */
+    .payment-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 15px;
+    }
+
+    .pay-card {
+      background-color: var(--card-bg);
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .pay-card.selected {
+      border-color: var(--primary);
+      background-color: #172c47;
+    }
+
+    .account-details {
+      background-color: #1e293b;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-size: 15px;
+      border-left: 4px solid var(--primary);
+      display: none;
+    }
+
     /* File Upload Section */
     .upload-box {
       background-color: var(--card-bg);
       border: 2px dashed #23354d;
       border-radius: 10px;
-      padding: 16px;
+      padding: 30px 16px;
       text-align: center;
       cursor: pointer;
-      margin-top: 10px;
-    }
-
-    .upload-box:hover {
-      border-color: var(--primary);
+      margin-top: 15px;
     }
 
     .file-input {
       display: none;
     }
 
-    .upload-text {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
     .preview-img {
       display: none;
       width: 100%;
-      max-height: 150px;
+      max-height: 200px;
       object-fit: contain;
-      margin-top: 10px;
+      margin-top: 15px;
       border-radius: 6px;
     }
 
-    /* Selection Preview Text */
-    .preview-text {
-      margin-top: 15px;
-      font-size: 14px;
-      color: var(--text-muted);
-    }
-
-    /* Order Button */
+    /* Navigation Buttons */
     .btn-submit {
       width: 100%;
       background-color: var(--primary);
@@ -192,15 +189,18 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 15px;
-      transition: background 0.2s;
+      margin-top: 20px;
     }
 
-    .btn-submit:hover {
-      background-color: var(--primary-hover);
+    /* Screens controlling styling */
+    .step-screen {
+      display: none;
     }
 
-    /* Success Result Screen */
+    #step1 {
+      display: block; /* ပထမဆုံး စာမျက်နှာကိုပဲ ဖွင့်ထားမည် */
+    }
+
     #resultScreen {
       display: none;
       text-align: center;
@@ -208,35 +208,17 @@
       background-color: var(--card-bg);
       border-radius: 12px;
       margin-top: 20px;
-      border: 1px solid #23354d;
-    }
-
-    .success-icon {
-      font-size: 44px;
-      color: #10b981;
-      margin-bottom: 10px;
-    }
-
-    .payment-box {
-      background-color: var(--bg-color);
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 16px;
-      text-align: left;
-      font-size: 14px;
-      border-left: 4px solid var(--primary);
-      line-height: 1.6;
     }
   </style>
 </head>
 <body>
 
-  <div id="mainForm">
-    <div class="header">
-      <h1>🐒 MONKEY RECHARGE</h1>
-      <p>Mobile Legends Diamonds Top-Up</p>
-    </div>
+  <div class="header">
+    <h1>🐒 MONKEY RECHARGE</h1>
+    <p>Mobile Legends Diamonds Top-Up</p>
+  </div>
 
+  <div id="step1" class="step-screen">
     <div class="section-title">Game ID & Zone ID ဖြည့်ပါ</div>
     <div class="input-group">
       <input type="number" id="gameId" class="input-field" placeholder="Player ID">
@@ -245,47 +227,65 @@
 
     <div class="section-title">စိန်ပမာဏရွေးချယ်ပါ</div>
     <div class="grid">
-      
       <div class="card" onclick="selectItem('11 Diamonds', '831', this)">
-        <div class="badge">မောင်ရခိုင်</div>
         <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
         <div class="title">11 💎</div>
-        <div class="old-price">900 K</div>
         <div class="price">831 K</div>
       </div>
-
       <div class="card" onclick="selectItem('22 Diamonds', '1561', this)">
-        <div class="badge">မောင်ရခိုင်</div>
         <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
         <div class="title">22 💎</div>
-        <div class="old-price">1700 K</div>
         <div class="price">1561 K</div>
       </div>
-
       <div class="card" onclick="selectItem('86 Diamonds', '5249', this)">
-        <div class="badge hot">Hot</div>
+        <div class="badge">Hot</div>
         <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
         <div class="title">86 💎</div>
-        <div class="old-price">5600 K</div>
         <div class="price">5249 K</div>
       </div>
-
     </div>
 
-    <div class="section-title">ငွေလွှဲပြေစာတင်ရန် (Kpay / Wave)</div>
+    <button class="btn-submit" onclick="goToStep(2)">နောက်တစ်ဆင့် သို့</button>
+  </div>
+
+
+  <div id="step2" class="step-screen">
+    <div class="section-title">ငွေလွှဲမည့် နည်းလမ်းကို ရွေးချယ်ပါ</div>
+    <div class="payment-grid">
+      <div class="pay-card" id="kpayOpt" onclick="selectPayment('KPay', '09xxxxxxxxx (U Monkey)')">
+        <span style="color:#007bfe; font-size: 24px;">K</span> KBZPay
+      </div>
+      <div class="pay-card" id="waveOpt" onclick="selectPayment('WavePay', '09xxxxxxxxx (U Monkey)')">
+        <span style="color:#ffc107; font-size: 24px;">W</span> WavePay
+      </div>
+    </div>
+
+    <div id="accountBox" class="account-details">
+      <b style="color:var(--primary);" id="payTitle">ငွေလွှဲရမည့် အကောင့်</b><br>
+      နံပါတ် - <span id="payNumber" style="font-size: 16px; font-weight: bold; color: #10b981;">-</span><br>
+      <span style="font-size:12px; color:var(--text-muted);">*ကျေးဇူးပြု၍ ငွေလွှဲပြီးမှ နောက်တစ်ဆင့်သို့ သွားပါရန်။</span>
+    </div>
+
+    <button class="btn-submit" onclick="goToStep(3)" style="margin-top: 30px;">ငွေလွှဲပြီးပါပြီ (နောက်တစ်ဆင့်)</button>
+    <button class="btn-submit" onclick="goToStep(1)" style="background-color: #334155; margin-top: 10px;">နောက်ပြန်ဆုတ်ရန်</button>
+  </div>
+
+
+  <div id="step3" class="step-screen">
+    <div class="section-title">ငွေလွှဲပြေစာ Screenshot တင်ပါ</div>
     <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-      <div class="upload-text" id="uploadText">📸 နှိပ်ပြီး ငွေလွှဲပြေစာ ဓာတ်ပုံတင်ပါ</div>
+      <div id="uploadText" style="font-size: 14px; color: var(--text-muted);">📸 နှိပ်ပြီး ငွေလွှဲပြေစာ ဓာတ်ပုံရွေးချယ်ပါ</div>
       <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="previewFile()">
       <img id="imagePreview" class="preview-img" src="">
     </div>
 
-    <div class="preview-text" id="previewText">ရွေးချယ်ထားသည့် ပစ္စည်း - မရှိသေးပါ</div>
-
-    <button class="btn-submit" id="submitBtn" onclick="placeOrder()">ဝယ်ယူမည်</button>
+    <button class="btn-submit" id="submitBtn" onclick="placeOrder()">အော်ဒါ အပြီးသတ်တင်မည်</button>
+    <button class="btn-submit" onclick="goToStep(2)" style="background-color: #334155; margin-top: 10px;">နောက်ပြန်ဆုတ်ရန်</button>
   </div>
 
+
   <div id="resultScreen">
-    <div class="success-icon">✓</div>
+    <div style="font-size: 44px; color: #10b981; margin-bottom: 10px;">✓</div>
     <h2 style="margin:0 0 8px 0; color:#10b981; font-size: 20px;">အော်ဒါတင်ခြင်း အောင်မြင်သည်</h2>
     <p style="margin:0; font-size:13px; color:var(--text-muted);">လူကြီးမင်း တင်ပေးလိုက်သော ငွေလွှဲပြေစာနှင့် အော်ဒါကို ဆိုင်မှ စစ်ဆေးပြီး ၅ မိနစ်အတွင်း စိန်ထည့်သွင်းပေးပါမည်။ ကျေးဇူးတင်ပါတယ်ဗျာ။</p>
   </div>
@@ -296,21 +296,51 @@
 
     let selectedProduct = "";
     let selectedPrice = "";
+    let selectedMethod = "";
     let base64Image = "";
 
     function selectItem(product, price, element) {
       const cards = document.querySelectorAll('.card');
       cards.forEach(card => card.classList.remove('selected'));
-      
       element.classList.add('selected');
       selectedProduct = product;
       selectedPrice = price;
-
-      document.getElementById('previewText').innerText = `ရွေးချယ်ထားသည့် ပစ္စည်း - ${product} (${price} K)`;
-      document.getElementById('previewText').style.color = "#2fa3e6";
     }
 
-    // ဓာတ်ပုံရွေးလိုက်ရင် အက်ပ်ထဲမှာ ကြိုပြပေးမည့် Function
+    function selectPayment(method, accInfo) {
+      document.getElementById('kpayOpt').classList.remove('selected');
+      document.getElementById('waveOpt').classList.remove('selected');
+      
+      if(method === 'KPay') document.getElementById('kpayOpt').classList.add('selected');
+      if(method === 'WavePay') document.getElementById('waveOpt').classList.add('selected');
+
+      selectedMethod = method;
+      document.getElementById('payTitle').innerText = `💰 ${method} ဖြင့် ငွေလွှဲရန်`;
+      document.getElementById('payNumber').innerText = accInfo;
+      document.getElementById('accountBox').style.display = 'block';
+    }
+
+    // စာမျက်နှာများ ကူးပြောင်းမည့် စနစ်
+    function goToStep(stepNumber) {
+      if(stepNumber === 2) {
+        const gId = document.getElementById('gameId').value;
+        const zId = document.getElementById('zoneId').value;
+        if(!gId || !zId || !selectedProduct) {
+          alert("Game ID, Zone ID နှင့် စိန်ပမာဏကို မှန်ကန်စွာ ရွေးချယ်ပေးပါဦးဗျာ။");
+          return;
+        }
+      }
+      if(stepNumber === 3 && !selectedMethod) {
+        alert("ကျေးဇူးပြု၍ ငွေလွှဲမည့် နည်းလမ်းကို ရွေးချယ်ပေးပါဦးဗျာ။");
+        return;
+      }
+
+      // စာမျက်နှာအားလုံးကို အရင်ဖျောက်ပြီး သတ်မှတ်စာမျက်နှာကို ပြခြင်း
+      const screens = document.querySelectorAll('.step-screen');
+      screens.forEach(screen => screen.style.display = 'none');
+      document.getElementById('step' + stepNumber).style.display = 'block';
+    }
+
     function previewFile() {
       const file = document.getElementById('fileInput').files[0];
       const preview = document.getElementById('imagePreview');
@@ -321,61 +351,43 @@
         preview.src = reader.result;
         preview.style.display = 'block';
         text.innerText = "✓ ဓာတ်ပုံ ရွေးချယ်ပြီးပါပြီ";
-        base64Image = reader.result.split(',')[1]; // Imgur API ပို့ရန် Base64 ဖြတ်ယူခြင်း
+        base64Image = reader.result.split(',')[1];
       }
-
-      if (file) {
-        reader.readAsDataURL(file);
-      }
+      if (file) reader.readAsDataURL(file);
     }
 
     async function placeOrder() {
-      const gId = document.getElementById('gameId').value;
-      const zId = document.getElementById('zoneId').value;
       const btn = document.getElementById('submitBtn');
-
-      if(!gId || !zId) {
-        alert("Game ID နှင့် Zone ID ကို ဖြည့်ပေးပါခင်ဗျာ။");
-        return;
-      }
-      if(!selectedProduct) {
-        alert("ဝယ်ယူမည့် စိန်ပမာဏကို ရွေးချယ်ပေးပါဦး။");
-        return;
-      }
       if(!base64Image) {
         alert("ကျေးဇူးပြု၍ ငွေလွှဲပြေစာ Screenshot အရင် တင်ပေးပါဦးဗျာ။");
         return;
       }
 
-      btn.innerText = "ပုံတင်ပြီး အော်ဒါပို့နေပါသည်...";
+      btn.innerText = "အော်ဒါ ပေးပို့နေပါသည်...";
       btn.disabled = true;
 
       try {
-        // အဆင့် ၁ - ပုံကို အွန်လိုင်းလင့်ခ်ဖြစ်အောင် Imgur ဆာဗာပေါ် အရင်တင်ခြင်း
         let imageUrl = "No Image";
         const imgurFormData = new FormData();
         imgurFormData.append("image", base64Image);
 
         const imgurResponse = await fetch("https://api.imgur.com/3/image", {
           method: "POST",
-          headers: {
-            Authorization: "Client-ID 544c07e999f7ec0" // Public Free Client-ID
-          },
+          headers: { Authorization: "Client-ID 544c07e999f7ec0" },
           body: imgurFormData
         });
         
         const imgurData = await imgurResponse.json();
-        if(imgurData.success) {
-          imageUrl = imgurData.data.link; // ပုံရဲ့ လင့်ခ်အစစ် ရပြီ
-        }
+        if(imgurData.success) imageUrl = imgurData.data.link;
 
-        // အဆင့် ၂ - Google Sheet သို့ ဒေတာအားလုံးနှင့် ပုံလင့်ခ်ကို လှမ်းပို့ခြင်း
+        // ဒေတာများ သိမ်းဆည်းခြင်း (ငွေလွှဲနည်းလမ်းပါ ထည့်ထားသည်)
         const orderData = {
-          gameId: gId,
-          zoneId: zId,
+          gameId: document.getElementById('gameId').value,
+          zoneId: document.getElementById('zoneId').value,
           product: selectedProduct,
           price: selectedPrice + " K",
-          screenshot: imageUrl // ပုံလင့်ခ် ထည့်သွင်းခြင်း
+          paymentMethod: selectedMethod, // Kpay သို့မဟုတ် Wavepay ရွေးထားမှု
+          screenshot: imageUrl
         };
 
         // ⚠️ ဤနေရာတွင် မိတ်ဆွေ၏ Google Web App URL ကို ထည့်ပါ ဘရို
@@ -384,19 +396,16 @@
         await fetch(googleSheetUrl, {
           method: 'POST',
           mode: 'no-cors',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderData)
         });
 
-        // အောင်မြင်လျှင် Success Screen ပြောင်းခြင်း
-        document.getElementById('mainForm').style.display = 'none';
+        document.getElementById('step3').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'block';
 
       } catch (error) {
         alert("Error ဖြစ်သွားပါသဖြင့် ပြန်လည်ကြိုးစားပေးပါဦး။");
-        btn.innerText = "ဝယ်ယူမည်";
+        btn.innerText = "အော်ဒါ အပြီးသတ်တင်မည်";
         btn.disabled = false;
       }
     }
