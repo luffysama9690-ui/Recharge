@@ -332,7 +332,6 @@
       document.getElementById('step' + stepNumber).style.display = 'block';
     }
 
-    // 📸 ဓာတ်ပုံကို ဖတ်ပြီး Google ပို့ရန် သင့်လျော်သော Size သို့ ချုံ့ပေးသည့် လုပ်ဆောင်ချက်
     function previewFile() {
       const file = document.getElementById('fileInput').files[0];
       const preview = document.getElementById('imagePreview');
@@ -340,30 +339,11 @@
       const reader = new FileReader();
 
       reader.onloadend = function () {
-        const img = new Image();
-        img.src = reader.result;
-        img.onload = function() {
-          // Canvas သုံးပြီး ဓာတ်ပုံ Resolution ကို လျှော့ချခြင်း
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2array') || canvas.getContext('2d');
-          
-          // အများဆုံးအနံကို 800px ထားပြီး ချုံ့မည်
-          const max_width = 800;
-          const scale = max_width / img.width;
-          canvas.width = max_width;
-          canvas.height = img.height * scale;
-
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          
-          // Quality ကို 0.6 (60%) အထိ ထပ်ချုံ့ပြီး Base64 ပြောင်းခြင်း
-          const compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-          
-          preview.src = compressedBase64;
-          preview.style.display = 'block';
-          text.innerText = "✓ ဓာတ်ပုံ ချုံ့ပြီး သိမ်းဆည်းပြီးပါပြီ";
-          
-          base64Image = compressedBase64.split(',')[1];
-        }
+        preview.src = reader.result;
+        preview.style.display = 'block';
+        text.innerText = "✓ ဓာတ်ပုံ ရွေးချယ်ပြီးပါပြီ";
+        // မူရင်းအတိုင်း Error ကင်းကင်းနဲ့ Base64 ဒေတာကို တိုက်ရိုက်ယူခြင်း
+        base64Image = reader.result.split(',')[1];
       }
       if (file) reader.readAsDataURL(file);
     }
@@ -387,7 +367,7 @@
         screenshot: base64Image
       };
 
-      // ⚠️ ဤနေရာတွင် မိတ်ဆွေ၏ Web App Deployment URL အသစ်ကို ပြန်ထည့်ပါ
+      // ⚠️ ဤနေရာတွင် သင်၏ Google Apps Script Web App Deployment URL ကို သေချာပြန်ထည့်ပါ ဘရို
       const googleSheetUrl = "https://script.google.com/macros/s/AKfycbzWAE1nHSbois20KiEnjpXMZZLacT3uXisyM8zyeR1SlxUEdeuhptOafzSl3iAvUC2V/exec";
 
       fetch(googleSheetUrl, {
