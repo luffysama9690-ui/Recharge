@@ -141,6 +141,39 @@
       font-weight: bold;
     }
 
+    /* File Upload Section */
+    .upload-box {
+      background-color: var(--card-bg);
+      border: 2px dashed #23354d;
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .upload-box:hover {
+      border-color: var(--primary);
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .upload-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .preview-img {
+      display: none;
+      width: 100%;
+      max-height: 150px;
+      object-fit: contain;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+
     /* Selection Preview Text */
     .preview-text {
       margin-top: 15px;
@@ -214,7 +247,7 @@
     <div class="grid">
       
       <div class="card" onclick="selectItem('11 Diamonds', '831', this)">
-        <div class="badge">မစောင့်ရ</div>
+        <div class="badge">မောင်ရခိုင်</div>
         <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
         <div class="title">11 💎</div>
         <div class="old-price">900 K</div>
@@ -222,7 +255,7 @@
       </div>
 
       <div class="card" onclick="selectItem('22 Diamonds', '1561', this)">
-        <div class="badge">မစောင့်ရ</div>
+        <div class="badge">မောင်ရခိုင်</div>
         <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
         <div class="title">22 💎</div>
         <div class="old-price">1700 K</div>
@@ -239,6 +272,13 @@
 
     </div>
 
+    <div class="section-title">ငွေလွှဲပြေစာတင်ရန် (Kpay / Wave)</div>
+    <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-text" id="uploadText">📸 နှိပ်ပြီး ငွေလွှဲပြေစာ ဓာတ်ပုံတင်ပါ</div>
+      <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="previewFile()">
+      <img id="imagePreview" class="preview-img" src="">
+    </div>
+
     <div class="preview-text" id="previewText">ရွေးချယ်ထားသည့် ပစ္စည်း - မရှိသေးပါ</div>
 
     <button class="btn-submit" id="submitBtn" onclick="placeOrder()">ဝယ်ယူမည်</button>
@@ -247,14 +287,7 @@
   <div id="resultScreen">
     <div class="success-icon">✓</div>
     <h2 style="margin:0 0 8px 0; color:#10b981; font-size: 20px;">အော်ဒါတင်ခြင်း အောင်မြင်သည်</h2>
-    <p style="margin:0; font-size:13px; color:var(--text-muted);">လူကြီးမင်း၏ အော်ဒါကို စနစ်ထဲသို့ ထည့်သွင်းပြီးပါပြီ။</p>
-    
-    <div class="payment-box">
-      <b style="color:var(--primary);">💰 ငွေလွှဲရမည့် အကောင့်များ</b><br>
-      • KPay - 09xxxxxxxxx (U Monkey)<br>
-      • WavePay - 09xxxxxxxxx (U Monkey)<br><br>
-      <span style="font-size:11px; color:#ef4444;">*ငွေလွှဲပြီးပါက လွှဲပြေစာ (Screenshot) ကို အပြင်က Chat Box ထဲသို့ ပို့ပေးပါရန်။</span>
-    </div>
+    <p style="margin:0; font-size:13px; color:var(--text-muted);">လူကြီးမင်း တင်ပေးလိုက်သော ငွေလွှဲပြေစာနှင့် အော်ဒါကို ဆိုင်မှ စစ်ဆေးပြီး ၅ မိနစ်အတွင်း စိန်ထည့်သွင်းပေးပါမည်။ ကျေးဇူးတင်ပါတယ်ဗျာ။</p>
   </div>
 
   <script>
@@ -263,8 +296,8 @@
 
     let selectedProduct = "";
     let selectedPrice = "";
+    let base64Image = "";
 
-    // ကတ်ပြားများကို ကလစ်နှိပ်လျှင် အလုပ်လုပ်စေမည့် Function
     function selectItem(product, price, element) {
       const cards = document.querySelectorAll('.card');
       cards.forEach(card => card.classList.remove('selected'));
@@ -273,13 +306,30 @@
       selectedProduct = product;
       selectedPrice = price;
 
-      // ရွေးလိုက်တဲ့အချက်အလက်ကို စာသားပြောင်းပေးခြင်း
       document.getElementById('previewText').innerText = `ရွေးချယ်ထားသည့် ပစ္စည်း - ${product} (${price} K)`;
       document.getElementById('previewText').style.color = "#2fa3e6";
     }
 
-    // ဝယ်ယူမည် ခလုတ်နှိပ်လျှင် အလုပ်လုပ်စေမည့် Function
-    function placeOrder() {
+    // ဓာတ်ပုံရွေးလိုက်ရင် အက်ပ်ထဲမှာ ကြိုပြပေးမည့် Function
+    function previewFile() {
+      const file = document.getElementById('fileInput').files[0];
+      const preview = document.getElementById('imagePreview');
+      const text = document.getElementById('uploadText');
+      const reader = new FileReader();
+
+      reader.onloadend = function () {
+        preview.src = reader.result;
+        preview.style.display = 'block';
+        text.innerText = "✓ ဓာတ်ပုံ ရွေးချယ်ပြီးပါပြီ";
+        base64Image = reader.result.split(',')[1]; // Imgur API ပို့ရန် Base64 ဖြတ်ယူခြင်း
+      }
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+
+    async function placeOrder() {
       const gId = document.getElementById('gameId').value;
       const zId = document.getElementById('zoneId').value;
       const btn = document.getElementById('submitBtn');
@@ -292,36 +342,63 @@
         alert("ဝယ်ယူမည့် စိန်ပမာဏကို ရွေးချယ်ပေးပါဦး။");
         return;
       }
+      if(!base64Image) {
+        alert("ကျေးဇူးပြု၍ ငွေလွှဲပြေစာ Screenshot အရင် တင်ပေးပါဦးဗျာ။");
+        return;
+      }
 
-      btn.innerText = "ခဏစောင့်ပါ...";
+      btn.innerText = "ပုံတင်ပြီး အော်ဒါပို့နေပါသည်...";
       btn.disabled = true;
 
-      const orderData = {
-        gameId: gId,
-        zoneId: zId,
-        product: selectedProduct,
-        price: selectedPrice + " K"
-      };
+      try {
+        // အဆင့် ၁ - ပုံကို အွန်လိုင်းလင့်ခ်ဖြစ်အောင် Imgur ဆာဗာပေါ် အရင်တင်ခြင်း
+        let imageUrl = "No Image";
+        const imgurFormData = new FormData();
+        imgurFormData.append("image", base64Image);
 
-      // ⚠️ ဤနေရာတွင် မိတ်ဆွေ၏ Google Web App URL ကို အစားထိုးထည့်ပါ ဘရို
-      const googleSheetUrl = "Yhttps://script.google.com/macros/s/AKfycbysQ-IN3neM2KOqnKtlBjsL1wY1krTb69q8Lry2Z3fLw6awhBwg9GsTCcrwH6adPnb8/exec";
+        const imgurResponse = await fetch("https://api.imgur.com/3/image", {
+          method: "POST",
+          headers: {
+            Authorization: "Client-ID 544c07e999f7ec0" // Public Free Client-ID
+          },
+          body: imgurFormData
+        });
+        
+        const imgurData = await imgurResponse.json();
+        if(imgurData.success) {
+          imageUrl = imgurData.data.link; // ပုံရဲ့ လင့်ခ်အစစ် ရပြီ
+        }
 
-      fetch(googleSheetUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(orderData)
-      }).then(() => {
-        // အက်ပ်မပိတ်ဘဲ Success Screen ကို ပြောင်းပြခြင်း
+        // အဆင့် ၂ - Google Sheet သို့ ဒေတာအားလုံးနှင့် ပုံလင့်ခ်ကို လှမ်းပို့ခြင်း
+        const orderData = {
+          gameId: gId,
+          zoneId: zId,
+          product: selectedProduct,
+          price: selectedPrice + " K",
+          screenshot: imageUrl // ပုံလင့်ခ် ထည့်သွင်းခြင်း
+        };
+
+        // ⚠️ ဤနေရာတွင် မိတ်ဆွေ၏ Google Web App URL ကို ထည့်ပါ ဘရို
+        const googleSheetUrl = "https://script.google.com/macros/s/AKfycbysQ-IN3neM2KOqnKtlBjsL1wY1krTb69q8Lry2Z3fLw6awhBwg9GsTCcrwH6adPnb8/exec";
+
+        await fetch(googleSheetUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData)
+        });
+
+        // အောင်မြင်လျှင် Success Screen ပြောင်းခြင်း
         document.getElementById('mainForm').style.display = 'none';
         document.getElementById('resultScreen').style.display = 'block';
-      }).catch((error) => {
+
+      } catch (error) {
         alert("Error ဖြစ်သွားပါသဖြင့် ပြန်လည်ကြိုးစားပေးပါဦး။");
         btn.innerText = "ဝယ်ယူမည်";
         btn.disabled = false;
-      });
+      }
     }
   </script>
 </body>
