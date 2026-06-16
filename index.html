@@ -271,7 +271,7 @@
   <div id="step3" class="step-screen">
     <div class="section-title">ငွေလွှဲပြေစာ Screenshot တင်ပါ</div>
     <div class="upload-box" onclick="document.getElementById('fileInput').click()">
-      <div id="uploadText" style="font-size: 14px; color: var(--text-muted);">📸 နှိပ်ပြီး ငွေလွှဲပြေစာ ဓာတ်ပုံရွေးချယ်ပါ</div>
+      <div id="uploadText" style="font-size: 14px; color: var(--text-muted);">📸 နှိပ်ပြီး Ngwe Lwဲပြေစာ ဓာတ်ပုံရွေးချယ်ပါ</div>
       <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="previewFile()">
       <img id="imagePreview" class="preview-img" src="">
     </div>
@@ -309,7 +309,7 @@
       if(method === 'KPay') document.getElementById('kpayOpt').classList.add('selected');
       if(method === 'WavePay') document.getElementById('waveOpt').classList.add('selected');
       selectedMethod = method;
-      document.getElementById('payTitle').innerText = `💰 ${method} ဖြင့် Ngwe Lwဲရန်`;
+      document.getElementById('payTitle').innerText = `💰 ${method} ဖြင့် ငွေလွှဲရန်`;
       document.getElementById('payNumber').innerText = accInfo;
       document.getElementById('accountBox').style.display = 'block';
     }
@@ -342,7 +342,6 @@
         preview.src = reader.result;
         preview.style.display = 'block';
         text.innerText = "✓ ဓာတ်ပုံ ရွေးချယ်ပြီးပါပြီ";
-        // ပုံကို Compress သို့မဟုတ် အရွယ်အစားအမှန်ကို ယူခြင်း
         base64Image = reader.result.split(',')[1];
       }
       if (file) reader.readAsDataURL(file);
@@ -358,18 +357,17 @@
       btn.innerText = "အော်ဒါ ပေးပို့နေပါသည်...";
       btn.disabled = true;
 
-      // Imgur ကို မသုံးတော့ဘဲ ဒေတာအားလုံးကို Google Sheet ဆီ တိုက်ရိုက် တန်းပို့ခြင်း
       const orderData = {
         gameId: document.getElementById('gameId').value,
         zoneId: document.getElementById('zoneId').value,
         product: selectedProduct,
         price: selectedPrice + " K",
         paymentMethod: selectedMethod,
-        screenshot: base64Image // Base64 Data တိုက်ရိုက်ပို့သည်
+        screenshot: base64Image
       };
 
-      // ⚠️ ဤနေရာတွင် သင်၏ Google Sheet Web App URL အသစ်ကို အစားထိုးထည့်ပါ
-      const googleSheetUrl = "https://script.google.com/macros/s/AKfycbwo2pblvN-3l2V8kWh4lRUhXaKq6fXdYEbUewfIByA0_My2fWDV4788oycuDDUIAeCT/exec";
+      // ⚠️ ဤနေရာတွင် သင်၏ Deployment URL အသစ်ကို အစားထိုးထည့်ပါ ဘရို
+      const googleSheetUrl = "https://script.google.com/macros/s/AKfycbxAfcZgeXsoOL91jJwC9bpomc-qOPGuijEkzmJPssj8VPWaXA1JM4rnR67eDfoB1G0Y/exec";
 
       fetch(googleSheetUrl, {
         method: 'POST',
