@@ -156,11 +156,24 @@
           screenshotUrl: uploadedImageUrl
         };
 
-        await fetch(googleSheetUrl, {
+        // ⚠️ ဒီ Fetch အပိုင်းကိုပဲ ပြင်ပါ
+        let response = await fetch(googleSheetUrl, {
           method: 'POST',
-          mode: 'no-cors',
+          mode: 'cors', // no-cors အစား cors သုံးပါ
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderData)
+        });
+
+        // အခုမှ response ကို ပြန်ဖတ်လို့ရပါမယ်
+        let result = await response.json();
+
+        if (result.status === "success") {
+          document.getElementById('step3').style.display = 'none';
+          document.getElementById('resultScreen').style.display = 'block';
+        } else {
+          alert("Error: " + result.message);
+          btn.innerText = "Submit Order"; btn.disabled = false;
+        }
         });
 
         document.getElementById('step3').style.display = 'none';
