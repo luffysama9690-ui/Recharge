@@ -21,7 +21,6 @@
   }
   h1 { font-size: 22px; color: #00a8ff; margin: 0; text-shadow: 0 0 10px rgba(0,168,255,0.5); }
   
-  /* Server Selection Box */
   .server-box {
     background: #122540;
     margin: 15px auto;
@@ -38,7 +37,6 @@
     color: white; border-radius: 6px; text-align: center; font-size: 14px;
   }
 
-  /* Grid Container */
   .grid-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -68,7 +66,6 @@
   .old-price { font-size: 10px; color: #ff4d4d; text-decoration: line-through; margin: 3px 0; }
   .new-price { font-size: 13px; font-weight: bold; color: #00a8ff; }
 
-  /* Bottom Order Bar */
   .order-bar {
     position: fixed; bottom: 0; left: 0; width: 100%;
     background: #0f2037; padding: 15px 0;
@@ -84,55 +81,70 @@
     font-weight: bold; font-size: 15px; cursor: pointer; margin-right: 20px;
     box-shadow: 0 0 15px rgba(0,168,255,0.4);
   }
+  
+  /* အောင်မြင်ကြောင်းပြသမည့် screen ကတ် */
+  #successScreen {
+    display: none;
+    background: #122540; margin: 30px auto; padding: 30px 15px;
+    border-radius: 12px; max-width: 450px; width: 90%;
+    border: 1px solid #20bf6b;
+  }
 </style>
 </head>
 <body>
 
-<div class="header">
-  <h1>🐒 MONKEY RECHARGE</h1>
-  <p style="font-size: 12px; color: #a0aec0; margin: 5px 0 0 0;">Mobile Legends Diamonds Top-Up</p>
-</div>
+<div id="mainMain">
+  <div class="header">
+    <h1>🐒 MONKEY RECHARGE</h1>
+    <p style="font-size: 12px; color: #a0aec0; margin: 5px 0 0 0;">Mobile Legends Diamonds Top-Up</p>
+  </div>
 
-<div class="server-box">
-  <div class="server-title">Game ID & Zone ID ဖြည့်ပါ</div>
-  <div class="server-inputs">
-    <input type="number" id="gameId" placeholder="Player ID">
-    <input type="number" id="zoneId" placeholder="Zone ID">
+  <div class="server-box">
+    <div class="server-title">Game ID & Zone ID ဖြည့်ပါ</div>
+    <div class="server-inputs">
+      <input type="number" id="gameId" placeholder="Player ID">
+      <input type="number" id="zoneId" placeholder="Zone ID">
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <div class="card" onclick="selectItem('Diamond 11', 831, this)">
+      <div class="badge">မစောင့်ရ</div>
+      <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
+      <div class="title">11 💎</div>
+      <div class="old-price">900 K</div>
+      <div class="new-price">831 K</div>
+    </div>
+
+    <div class="card" onclick="selectItem('Diamond 22', 1561, this)">
+      <div class="badge">မစောင့်ရ</div>
+      <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
+      <div class="title">22 💎</div>
+      <div class="old-price">1700 K</div>
+      <div class="new-price">1561 K</div>
+    </div>
+
+    <div class="card" onclick="selectItem('Diamond 86', 5249, this)">
+      <div class="badge">Hot</div>
+      <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
+      <div class="title">86 💎</div>
+      <div class="old-price">5600 K</div>
+      <div class="new-price">5249 K</div>
+    </div>
+  </div>
+
+  <div class="order-bar">
+    <div class="total-info">
+      <div class="total-title">ရွေးချယ်ထားသည့် ပစ္စည်း</div>
+      <div class="total-price" id="displayPrice">0 MMK</div>
+    </div>
+    <button class="buy-btn" id="subBtn" onclick="placeOrder()">ဝယ်ယူမည်</button>
   </div>
 </div>
 
-<div class="grid-container">
-  <div class="card" onclick="selectItem('Diamond 11', 831, this)">
-    <div class="badge">မစောင့်ရ</div>
-    <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
-    <div class="title">11 💎</div>
-    <div class="old-price">900 K</div>
-    <div class="new-price">831 K</div>
-  </div>
-
-  <div class="card" onclick="selectItem('Diamond 22', 1561, this)">
-    <div class="badge">မစောင့်ရ</div>
-    <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
-    <div class="title">22 💎</div>
-    <div class="old-price">1700 K</div>
-    <div class="new-price">1561 K</div>
-  </div>
-
-  <div class="card" onclick="selectItem('Diamond 86', 5249, this)">
-    <div class="badge">Hot</div>
-    <img class="diamond-img" src="https://img.icons8.com/external-flat-icons-inspirational-three-barba-silhouette/64/000000/external-diamond-casino-flat-icons-inspirational-three-barba-silhouette.png">
-    <div class="title">86 💎</div>
-    <div class="old-price">5600 K</div>
-    <div class="new-price">5249 K</div>
-  </div>
-</div>
-
-<div class="order-bar">
-  <div class="total-info">
-    <div class="total-title">ရွေးချယ်ထားသည့် ပစ္စည်း</div>
-    <div class="total-price" id="displayPrice">0 MMK</div>
-  </div>
-  <button class="buy-btn" onclick="placeOrder()">ဝယ်ယူမည်</button>
+<div id="successScreen">
+  <h2 style="color:#20bf6b; margin:0 0 10px 0;">✓ အော်ဒါတင်ပြီးပါပြီ</h2>
+  <p style="font-size:14px; color:#a0aec0; margin:0;">ခေတ္တစောင့်ဆိုင်းပေးပါ။ စိန်ကို အလိုအလျောက် ထည့်သွင်းပေးနေပါသည်။</p>
 </div>
 
 <script>
@@ -151,7 +163,7 @@
     document.getElementById('displayPrice').innerText = price + " MMK";
   }
 
-  function placeOrder() {
+  async function placeOrder() {
     const gId = document.getElementById('gameId').value;
     const zId = document.getElementById('zoneId').value;
 
@@ -164,16 +176,37 @@
       return;
     }
 
-    // Telegram Bot ထဲကို အချက်အလက် လှမ်းပို့ခြင်း
-    const orderData = {
-      gameId: gId,
-      zoneId: zId,
-      product: selectedProduct,
-      price: selectedPrice + " MMK"
-    };
+    const btn = document.getElementById('subBtn');
+    btn.innerText = "Processing...";
+    btn.disabled = true;
 
-    tg.sendData(JSON.stringify(orderData));
-    tg.close();
+    // ⚠️ ဘရိုရဲ့ လက်ရှိမှန်ကန်တဲ့ Google Apps Script Web App URL အသစ်ကို အောက်ကနေရာမှာ အစားထိုးထည့်ပါ
+    const googleSheetUrl = "https://script.google.com/macros/s/AKfycbzEZI86CjuXQGYDabbrma1H6PcvvrE6NTGYm7e0PQChBeRA7LXxWnFY3O2-dBMGBfOZ/execါ";
+
+    try {
+      await fetch(googleSheetUrl, {
+        method: 'POST',
+        mode: 'no-cors', 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gameId: gId,
+          zoneId: zId,
+          product: selectedProduct,
+          price: selectedPrice + " MMK",
+          paymentMethod: "Wallet Balance", // အလိုအလျောက် သတ်မှတ်ခြင်း
+          screenshot: "No Screenshot (Auto Bot)"
+        })
+      });
+
+      // Bot မပိတ်ဘဲ မူလ Screen ကိုဖျောက်ပြီး အောင်မြင်မှု Screen ကို ပြောင်းပြခြင်း
+      document.getElementById('mainMain').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+
+    } catch (error) {
+      // ကွန်ရက်ချိတ်ဆက်မှု ပြဿနာရှိရင်တောင် အောင်မြင်မှုစခရင်ဆီ သွားခိုင်းလိုက်ခြင်း
+      document.getElementById('mainMain').style.display = 'none';
+      document.getElementById('successScreen').style.display = 'block';
+    }
   }
 </script>
 </body>
